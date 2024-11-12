@@ -1,5 +1,7 @@
+import { StatusCodes } from "http-status-codes";
+import AppError from "../../Error-Handler/AppError";
 import prisma from "../../shared/prisma";
-import { TBorrow } from "./BorrowRecord.interface";
+import { TBorrow, TReturn } from "./BorrowRecord.interface";
 
 const borrowDB = async (payload: TBorrow) => {
   await prisma.book.findUniqueOrThrow({
@@ -17,7 +19,29 @@ const borrowDB = async (payload: TBorrow) => {
   });
   return result;
 };
+const returnDB = async (payload: TReturn) => {
+  const borrow = await prisma.borrowRecord.findUniqueOrThrow({
+    where: {
+      borrowId: payload?.borrowId,
+    },
+  });
+
+  if (borrow?.returnDate !== null) {
+    throw new AppError(StatusCodes.BAD_REQUEST, "This book already returned")
+  }
+
+  const result = await prisma.borrowRecord.update({
+    where: {
+      borrowId: payload?.borrowId,
+    },
+    data: {
+      returnDate: new Date(),
+    },
+  });
+  return result;
+};
 
 export const borrowAndReturnService = {
-    borrowDB,
+  borrowDB,
+  returnDB,
 };

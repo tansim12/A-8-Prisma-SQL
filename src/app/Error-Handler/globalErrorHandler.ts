@@ -1,30 +1,38 @@
-
-import { PrismaClientKnownRequestError, PrismaClientValidationError } from "@prisma/client/runtime/library";
+import {
+  PrismaClientKnownRequestError,
+  PrismaClientValidationError,
+} from "@prisma/client/runtime/library";
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 
-const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
-    let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
-    let success = false;
-    let message = err.message || "Something went wrong!";
-    let error = err;
+const globalErrorHandler = (
+  err: any,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+  let success = false;
+  let message = err.message || "Something went wrong!";
+  let error = err;
 
-    if (err instanceof PrismaClientValidationError) {  // Use imported PrismaClientValidationError here
-        message = 'Validation Error';
-        error = err.message;
+  if (err instanceof PrismaClientValidationError) {
+    // Use imported PrismaClientValidationError here
+    message = "Validation Error";
+    error = err.message;
+  } else if (err instanceof PrismaClientKnownRequestError) {
+    if (err.code === "P2002") {
+      message = "Duplicate Key error";
+      error = err.meta;
     }
-    else if (err instanceof PrismaClientKnownRequestError) {
-        if (err.code === 'P2002') {
-            message = "Duplicate Key error";
-            error = err.meta;
-        }
-    }
+  }
 
-    res.status(statusCode).json({
-        success,
-        message,
-        error
-    });
+  res.status(statusCode).json({
+    success,
+    message,
+    statusCode: error?.statusCode || statusCode,
+    error,
+  });
 };
 
 export default globalErrorHandler;

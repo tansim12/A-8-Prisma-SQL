@@ -13,5 +13,15 @@ const borrow: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+const returnBook: RequestHandler = async (req, res, next) => {
+  try {
+    const result = await borrowAndReturnService.returnDB(req.body);
+    res.send(
+      successResponse(result, StatusCodes.OK, "Book returned successfully")
+    );
+  } catch (error) {
+    next(error);
+  }
+};
 
-export const borrowAndReturnController = { borrow };
+export const borrowAndReturnController = { borrow, returnBook };
