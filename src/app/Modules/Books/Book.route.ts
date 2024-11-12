@@ -10,5 +10,7 @@ router.post(
   validationMiddleWare(bookValidationSchema.createBookSchema),
   bookController.createBook
 );
+router.get("/", bookController.findAllBook);
+router.get("/:bookId", bookController.findSingleBooks);
 
 export const bookRouter = router;
