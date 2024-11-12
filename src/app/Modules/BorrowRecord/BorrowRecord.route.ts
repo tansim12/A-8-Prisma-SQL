@@ -10,6 +10,6 @@ router.post(
   validationMiddleWare(borrowAndReturnSchemaValidation.borrowSchema),
   borrowAndReturnController.borrow
 );
-
+router.get("/overdue", borrowAndReturnController.borrowOverdue);
 
 export const borrowAndReturnRouter = router;

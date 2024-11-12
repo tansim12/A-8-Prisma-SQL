@@ -30,7 +30,7 @@ const globalErrorHandler = (
   res.status(statusCode).json({
     success,
     message,
-    statusCode: error?.statusCode || statusCode,
+    status: error?.statusCode || statusCode,
     error,
   });
 };

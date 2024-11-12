@@ -23,5 +23,15 @@ const returnBook: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+const borrowOverdue: RequestHandler = async (req, res, next) => {
+  try {
+    const result = await borrowAndReturnService.borrowOverdueDB();
+    res.send(
+      successResponse(result, StatusCodes.OK, "Overdue borrow list fetched")
+    );
+  } catch (error) {
+    next(error);
+  }
+};
 
-export const borrowAndReturnController = { borrow, returnBook };
+export const borrowAndReturnController = { borrow, returnBook,borrowOverdue};
