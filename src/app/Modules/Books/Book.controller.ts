@@ -46,10 +46,21 @@ const updateSingleBooks: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+const deleteBook: RequestHandler = async (req, res, next) => {
+  try {
+    const result = await bookService.deleteBookDB(req?.params?.bookId);
+    res.send(
+      successResponse(result, StatusCodes.OK, "Book successfully deleted")
+    );
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const bookController = {
   createBook,
   findAllBook,
   findSingleBooks,
   updateSingleBooks,
+  deleteBook,
 };

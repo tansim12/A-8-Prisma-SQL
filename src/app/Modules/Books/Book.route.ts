@@ -17,5 +17,6 @@ router.put(
   validationMiddleWare(bookValidationSchema.updateBookSchema),
   bookController.updateSingleBooks
 );
+router.delete("/:bookId", bookController.deleteBook);
 
 export const bookRouter = router;

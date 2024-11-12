@@ -29,7 +29,7 @@ const updateSingleBooksDB = async (bookId: string, payload: Partial<TBook>) => {
   });
 
   if (payload?.bookId) {
-    throw new AppError(StatusCodes.BAD_REQUEST,"Can't change bookId")
+    throw new AppError(StatusCodes.BAD_REQUEST, "Can't change bookId");
   }
 
   const result = await prisma.book.update({
@@ -40,10 +40,25 @@ const updateSingleBooksDB = async (bookId: string, payload: Partial<TBook>) => {
   });
   return result;
 };
+const deleteBookDB = async (bookId: string) => {
+  await prisma.book.findUniqueOrThrow({
+    where: {
+      bookId,
+    },
+  });
+
+  const result = await prisma.book.delete({
+    where: {
+      bookId,
+    },
+  });
+  // return result;
+};
 
 export const bookService = {
   createBookDB,
   findAllBooksDB,
   findSingleBooksDB,
   updateSingleBooksDB,
+  deleteBookDB,
 };
