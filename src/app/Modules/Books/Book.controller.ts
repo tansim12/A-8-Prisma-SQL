@@ -33,9 +33,23 @@ const findSingleBooks: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+const updateSingleBooks: RequestHandler = async (req, res, next) => {
+  try {
+    const result = await bookService.updateSingleBooksDB(
+      req?.params?.bookId,
+      req?.body
+    );
+    res.send(
+      successResponse(result, StatusCodes.OK, "Book updated successfully")
+    );
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const bookController = {
   createBook,
   findAllBook,
   findSingleBooks,
+  updateSingleBooks,
 };

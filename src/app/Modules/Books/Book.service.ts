@@ -19,9 +19,25 @@ const findSingleBooksDB = async (bookId: string) => {
   });
   return result;
 };
+const updateSingleBooksDB = async (bookId: string, payload: Partial<TBook>) => {
+  await prisma.book.findUniqueOrThrow({
+    where: {
+      bookId,
+    },
+  });
+
+  const result = await prisma.book.update({
+    where: {
+      bookId,
+    },
+    data: payload,
+  });
+  return result;
+};
 
 export const bookService = {
   createBookDB,
   findAllBooksDB,
   findSingleBooksDB,
+  updateSingleBooksDB,
 };

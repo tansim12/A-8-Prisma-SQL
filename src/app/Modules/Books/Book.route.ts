@@ -12,5 +12,10 @@ router.post(
 );
 router.get("/", bookController.findAllBook);
 router.get("/:bookId", bookController.findSingleBooks);
+router.put(
+  "/:bookId",
+  validationMiddleWare(bookValidationSchema.updateBookSchema),
+  bookController.updateSingleBooks
+);
 
 export const bookRouter = router;
