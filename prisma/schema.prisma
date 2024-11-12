@@ -34,7 +34,7 @@ model Member {
   name String 
   email String @unique
   phone String 
-  membershipDate DateTime @default(now())
+  membershipDate DateTime 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
