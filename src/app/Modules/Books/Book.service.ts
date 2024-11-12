@@ -1,3 +1,5 @@
+import { StatusCodes } from "http-status-codes";
+import AppError from "../../Error-Handler/AppError";
 import prisma from "../../shared/prisma";
 import { TBook } from "./Book.interface";
 
@@ -25,6 +27,10 @@ const updateSingleBooksDB = async (bookId: string, payload: Partial<TBook>) => {
       bookId,
     },
   });
+
+  if (payload?.bookId) {
+    throw new AppError(StatusCodes.BAD_REQUEST,"Can't change bookId")
+  }
 
   const result = await prisma.book.update({
     where: {
