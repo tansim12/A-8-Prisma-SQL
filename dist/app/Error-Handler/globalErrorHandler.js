@@ -18,10 +18,10 @@ const globalErrorHandler = (err, req, res, next) => {
             error = err.meta;
         }
     }
-    res.status(statusCode).json({
+    res.status((error === null || error === void 0 ? void 0 : error.name) === "NotFoundError" ? 404 : statusCode).json({
         success,
         message,
-        status: (error === null || error === void 0 ? void 0 : error.statusCode) || statusCode,
+        status: (error === null || error === void 0 ? void 0 : error.name) === "NotFoundError" ? 404 : (error === null || error === void 0 ? void 0 : error.statusCode) || statusCode,
         error,
     });
 };
