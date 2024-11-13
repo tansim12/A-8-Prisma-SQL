@@ -14,7 +14,7 @@ const app = (0, express_1.default)();
 (0, normalMiddleware_1.default)(app);
 app.get("/", (req, res) => {
     res.send({
-        Message: "Ph health care server..",
+        Message: "book library  server..",
     });
 });
 app.use("/api/books", Book_route_1.bookRouter);
