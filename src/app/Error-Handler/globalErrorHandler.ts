@@ -27,10 +27,11 @@ const globalErrorHandler = (
     }
   }
 
-  res.status(statusCode).json({
+  res.status(error?.name === "NotFoundError" ? 404 : statusCode).json({
     success,
     message,
-    status: error?.statusCode || statusCode,
+    status:
+      error?.name === "NotFoundError" ? 404 : error?.statusCode || statusCode,
     error,
   });
 };
